@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Service\BoardService;
+use App\Service\GameService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,6 +15,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(GameService::class, function ($app) {
+            return new GameService();
+        });
+        $this->app->singleton(BoardService::class, function ($app) {
+            return new BoardService();
+        });
     }
 }

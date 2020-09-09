@@ -25,6 +25,20 @@ class GameCommand extends Command
      */
     protected $description = "Start a new game";
 
+    /** @var BoardService */
+    private $boardService;
+
+    /** @var GameService */
+    private $gameService;
+
+    public function __construct(BoardService $boardService, GameService $gameService)
+    {
+        parent::__construct();
+        $this->boardService = $boardService;
+        $this->gameService = $gameService;
+    }
+
+
     /**
      * Execute the console command.
      *
@@ -33,12 +47,10 @@ class GameCommand extends Command
     public function handle()
     {
         try {
-            $boardBuilder = new BoardService();
-            $gameService = new GameService();
-            $board = $boardBuilder->build();
-            $game = $gameService->buildGame($board);
+            $board = $this->boardService->build();
+            $game = $this->gameService->buildGame($board);
 
-            $result = $gameService->play($game);
+            $result = $this->gameService->play($game);
 
             $this->info(json_encode($result, JSON_PRETTY_PRINT));
 
